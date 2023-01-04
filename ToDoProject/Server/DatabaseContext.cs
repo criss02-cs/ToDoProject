@@ -14,7 +14,7 @@ namespace ToDoProject.Server
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ToDoItem>().HasOne(t => t.User)
-                .WithMany(t => t.ToDoItems).HasForeignKey(x => x.User);
+                .WithMany(t => t.ToDoItems).HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.ToDoItems)
                 .WithOne(x => x.User);
         }

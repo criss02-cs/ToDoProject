@@ -14,8 +14,7 @@ namespace ToDoProject.Models.Entities
         public string? Name { get; set; }
         [Required]
         public string? Surname { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
-        public DateTime? DateBirth { get; set; }
+        public DateTime? BirthDate { get; set; }
         [Required]
         public string? Email { get; set; }
         [Required]

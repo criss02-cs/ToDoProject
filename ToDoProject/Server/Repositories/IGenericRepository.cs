@@ -60,5 +60,10 @@ namespace ToDoProject.Server.Repositories
         /// </summary>
         /// <param name="id">L'id della entity da eliminare</param>
         void Delete(object id);
+        /// <summary>
+        /// Esegue l'eliminazione logica della entity di cui ho l'id dal db
+        /// </summary>
+        /// <param name="id">L'id della entity da eliminare</param>
+        void DeleteLogical(TEntity entity);
     }
 }

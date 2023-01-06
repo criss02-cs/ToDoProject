@@ -10,5 +10,10 @@
             }
             return -1;
         }
+
+        public static bool IsToday(this DateTime date)
+        {
+            return date.Equals(DateTime.Today);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ToDoProject.Models.DTO;
+using ToDoProject.Models.DTO.Auth;
 using ToDoProject.Models.Entities;
 using ToDoProject.Server.Repositories;
 
@@ -29,6 +30,38 @@ namespace ToDoProject.Server.Business
                 return usersDto;
             }
             return null;
+        }
+
+        public bool Insert(UserDTO model)
+        {
+            User entity = UserDTO.GetEntity(model);
+            _repository.Insert(entity);
+            var righe = _ctx.SaveChanges();
+            return righe > 0;
+        }
+
+        public UserDTO GetUserById(Guid id)
+        {
+            var entity = _repository.GetById(id);
+            var model = UserDTO.Create(entity);
+            return model;
+        }
+
+        public bool DeleteLogical(Guid id)
+        {
+            var model = this.GetUserById(id);
+            var entity = UserDTO.GetEntity(model);
+            entity.IsDeleted = true;
+            _repository.DeleteLogical(entity);
+            var righe = _ctx.SaveChanges();
+            return righe > 0;
+        }
+        public bool Update(UserDTO model)
+        {
+            User entity = UserDTO.GetEntity(model);
+            _repository.Update(entity);
+            var righe = _ctx.SaveChanges();
+            return righe > 0;
         }
     }
 }

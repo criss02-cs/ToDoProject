@@ -32,9 +32,15 @@ namespace ToDoProject.Server.Business
             return null;
         }
 
-        public bool Insert(UserDTO model)
+        public bool InsertDTO(UserDTO model)
         {
             User entity = UserDTO.GetEntity(model);
+            _repository.Insert(entity);
+            var righe = _ctx.SaveChanges();
+            return righe > 0;
+        }
+        public bool Insert(User entity)
+        {
             _repository.Insert(entity);
             var righe = _ctx.SaveChanges();
             return righe > 0;

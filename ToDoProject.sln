@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoProject.Client", "ToDoP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoProject.Models", "ToDoProject\Shared\ToDoProject.Models.csproj", "{9E49011D-DBEC-44D7-835D-51FD95CB2BAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoProject.Utils", "ToDoProject.Utils\ToDoProject.Utils.csproj", "{94C1FC73-6BCC-419D-A639-E7CCF5BECDF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoProject.Utils", "ToDoProject.Utils\ToDoProject.Utils.csproj", "{94C1FC73-6BCC-419D-A639-E7CCF5BECDF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

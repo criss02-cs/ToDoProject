@@ -22,8 +22,8 @@ namespace ToDoProject.Server.Controllers
             _configuration = conf;
             _ctx = ctx;
         }
-        [HttpPost, Route("/Register")]
-        public IActionResult Register([FromBody] RegistrationRequest body)
+        [HttpPost, Route("Register")]
+        public ActionResult<RegistrationResponse> Register([FromBody] RegistrationRequest body)
         {
             // Non faccio controlli sulla validazione perché
             // li farò nella parte di FE
@@ -47,6 +47,7 @@ namespace ToDoProject.Server.Controllers
             ClaimsIdentity cIdentity = new ClaimsIdentity(new[] {
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Actor, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
             });
             //recupero da Web.Config issuer e secret
             var issuer = _configuration["JWT:Issuer"];

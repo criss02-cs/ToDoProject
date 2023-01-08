@@ -28,17 +28,22 @@ namespace ToDoProject.Server.Business
                 result.Error = "Esiste già un utente con quella email";
                 return result;
             }
-            user.Surname = request.Surname;
-            user.Password = request.Password;
-            user.Email = request.Email;
-            user.Name = request.Name;
-            user.CreatedDate = DateTime.Now;
-            user.UpdatedDate = DateTime.Now;
-            user.IsDeleted = false;
+            user = new User
+            {
+                Password = request.Password,
+                Email = request.Email,
+                Name = request.Name,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                IsDeleted = false,
+                BirthDate = request.BirthDate,
+                Surname = request.Surname
+            };
             var userManager = new UserManager(_ctx);
             var model = UserDTO.Create(user);
-            userManager.Insert(model);
+            userManager.Insert(user);
             result.User = model;
+            result.IsSuccesfulRegistration = true;
             return result;
         }
     }

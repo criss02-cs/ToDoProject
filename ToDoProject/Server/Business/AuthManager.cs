@@ -43,6 +43,7 @@ namespace ToDoProject.Server.Business
             var model = UserDTO.Create(user);
             userManager.Insert(user);
             result.User = model;
+            result.User.Id = user.Id;
             result.IsSuccesfulRegistration = true;
             return result;
         }

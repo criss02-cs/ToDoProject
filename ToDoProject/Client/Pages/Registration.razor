@@ -1,60 +1,49 @@
 ﻿@page "/registration"
-<h3>Registration</h3>
+@using System.ComponentModel.DataAnnotations;
 
-@if (ShowRegistrationErrors)
+
+@if (ShowRegistrationErrors && Error != "")
 {
-        <div class="alert alert-danger" role="alert">
-            <p>@Error</p>
-        </div>
+                <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true"
+                    CloseIconClicked="(() => ShowRegistrationErrors = false)" Style="margin-bottom: 20px">
+                    @Error
+                </MudAlert>
 }
-<EditForm Model="_request" OnSubmit="Register" class="card card-body bg-light mt-5">
-    <DataAnnotationsValidator />
-    <div class="form-group row">
-        <label for="email" class="col-md-2 col-form-label">Nome:</label>
-        <div class="col-md-10">
-            <InputText id="email" class="form-control" @bind-Value="_request.Name" />
-            <ValidationMessage For="@(() => _request.Name)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="email" class="col-md-2 col-form-label">Cognome:</label>
-        <div class="col-md-10">
-            <InputText id="email" class="form-control" @bind-Value="_request.Surname" />
-            @*<ValidationMessage For="@(() => _request.Name)" />*@
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="email" class="col-md-2 col-form-label">Email:</label>
-        <div class="col-md-10">
-            <InputText id="email" class="form-control" @bind-Value="_request.Email" />
-            <ValidationMessage For="@(() => _request.Email)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="password" class="col-md-2 col-form-label">Password:</label>
-        <div class="col-md-10">
-            <InputText type="password" id="password" class="form-control" @bind-Value="_request.Password" />
-            <ValidationMessage For="@(() => _request.Password)" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="confirm" class="col-md-2 col-form-label">Reinserisci la password:</label>
-        <div class="col-md-10">
-            <InputText type="password" id="confirm" class="form-control" @bind-Value="_request.ConfirmPassword" />
-            <ValidationMessage For="@(() => _request.ConfirmPassword)" />
-        </div>
-    </div>
-    @*Creare nuovo componente per le date*@
-    <div class="form-group row">
-        <label for="confirm" class="col-md-2 col-form-label">Data di nascita:</label>
-        <div class="col-md-10">
-            <InputDate id="confirm" class="form-control" @bind-Value="_request.BirthDate" />
-            @*<ValidationMessage For="@(() => _request.ConfirmPassword)" />*@
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <button type="submit" class="btn btn-success">Register</button>
-        </div>
-    </div>
-</EditForm>
+@if(!IsLoading) 
+{
+        <EditForm Model="@_request" OnValidSubmit="Register">
+        <DataAnnotationsValidator/>
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardHeader>
+                        <h3>Registrazione</h3>
+                    </MudCardHeader>
+                    <MudCardContent>
+                            <MudTextField T="string" Label="Nome" Required="true" RequiredError="Il nome è obbligatorio!" @bind-Value="@_request.Name"/>
+                            <MudTextField T="string" Label="Cognome" Required="true" RequiredError="Il cognome è obbligatorio" @bind-Value="@_request.Surname"/>
+                            <MudTextField T="string" Label="Email" Required="true" RequiredError="L'indirizzo email è obbligatorio" @bind-Value="@_request.Email"
+                                      Validation="@(new EmailAddressAttribute() {ErrorMessage = "L'indirizzo email non è valido"})"/>
+                            <MudTextField T="string" Label="Password" HelperText="Scegli una password forte"
+                                      InputType="InputType.Password" @bind-Value="@_request.Password"
+                                      Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                                      RequiredError="La password è obbligatoria!"/>
+                            <MudTextField T="string" @bind-Value="@_request.ConfirmPassword"
+                                      Label="Password" HelperText="Reinserisci la password" InputType="InputType.Password"
+                                      Validation="@(new Func<string, string>(PasswordMatch))"/>
+                            <MudDatePicker Label="Data di nascita" Editable="true" @bind-Date="@_request.BirthDate" Placeholder="Seleziona la tua data di nascita" />                    
+                    </MudCardContent>
+                    <MudCardActions>
+                        <div class="d-flex ml-auto">
+                            <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Class="ml-auto">Registrati</MudButton>
+                        </div>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+}
+else
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+}

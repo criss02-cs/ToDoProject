@@ -1,4 +1,5 @@
 ﻿@page "/registration"
+@layout CenteredCardLayout
 @using System.ComponentModel.DataAnnotations;
 
 
@@ -11,10 +12,10 @@
 }
 @if(!IsLoading) 
 {
-        <EditForm Model="@_request" OnValidSubmit="Register">
+    <EditForm Model="@_request" OnValidSubmit="Register" class="col-12">
         <DataAnnotationsValidator/>
         <MudGrid>
-            <MudItem xs="12" sm="7">
+            <MudItem xs="12">
                 <MudCard>
                     <MudCardHeader>
                         <h3>Registrazione</h3>
@@ -34,9 +35,10 @@
                             <MudDatePicker Label="Data di nascita" Editable="true" @bind-Date="@_request.BirthDate" Placeholder="Seleziona la tua data di nascita" />                    
                     </MudCardContent>
                     <MudCardActions>
-                        <div class="d-flex ml-auto">
-                            <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Class="ml-auto">Registrati</MudButton>
-                        </div>
+                            <div class="d-flex m-auto">
+                                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Button" @onclick="NavigateToLogin" Color="Color.Secondary" Class="ml-auto" Style="margin-right: 10px">Accedi</MudButton>
+                                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Class="ml-auto" Style="margin-left: 10px">Registrati</MudButton>
+                            </div>
                     </MudCardActions>
                 </MudCard>
             </MudItem>

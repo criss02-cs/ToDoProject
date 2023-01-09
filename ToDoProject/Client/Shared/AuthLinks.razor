@@ -1,11 +1,21 @@
 ﻿@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 <AuthorizeView>
     <Authorized>
-        Hello 
-        @*<a href="Logout">Log out</a>*@
+        Hello, @context.User.Identity.Name
+        <a @onclick="(() => Logout())">Log out</a>
     </Authorized>
     <NotAuthorized>
         <a href="Registration">Register</a>
         @*<a href="Login">Log in</a>*@
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    public void Logout()
+    {
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggetOut();
+        NavigationManager.NavigateTo("/");
+    }
+}

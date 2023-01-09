@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -29,6 +30,20 @@ namespace ToDoProject.Server.Controllers
             // li farò nella parte di FE
             var manager = new AuthManager(_ctx);
             var result = manager.Register(body);
+            if (result.IsSuccesfulRegistration)
+            {
+                //do some stuff to take token
+                result.Token = this.CreateToken(result.User);
+            }
+            return Ok(result);
+        }
+
+
+        [HttpPost, Route("Login")]
+        public ActionResult<RegistrationResponse> Login([FromBody] LoginRequest request)
+        {
+            var manager = new AuthManager(_ctx);
+            var result = manager.Login(request);
             if (result.IsSuccesfulRegistration)
             {
                 //do some stuff to take token

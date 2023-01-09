@@ -31,11 +31,16 @@ namespace ToDoProject.Client.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Inject]
-        public ILocalStorageService localStorage { get; set; }
+        public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         public bool ShowRegistrationErrors { get; set; } = false;
 
         public bool IsLoading { get; set; } = false;
         public string? Error { get; set; }
+
+        public void NavigateToLogin()
+        {
+            NavigationManager.NavigateTo("/");
+        }
         public async Task Register()
         {
             this.ShowRegistrationErrors = false;
@@ -50,12 +55,11 @@ namespace ToDoProject.Client.Pages
             }
             else
             {
-                var user = new UserLocalStorage
-                {
-                    Token = result.Token,
-                    User = result.User
-                };
-                await localStorage.SetItemAsync("currentuser", user);
+                // Salvo l'utente e il token nel local storage
+                // Marco l'utente come autenticato così da poter accedere ai suoi dati anche da altre pagine
+                ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(result.User);
+                // Torno alla home
+                NavigationManager.NavigateTo("/home");
                 //Console.WriteLine(result.User?.Name);
             }
         }

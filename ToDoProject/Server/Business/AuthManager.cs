@@ -20,7 +20,8 @@ namespace ToDoProject.Server.Business
         public RegistrationResponse Register(RegistrationRequest request)
         {
             var result = new RegistrationResponse();
-            var user = _repository.GetFirstOrDefault(x => x.Email.Equals(request.Email));
+            // Mi prendo il primo utente con quella email che non sia eliminato
+            var user = _repository.GetFirstOrDefault(x => x.Email.Equals(request.Email) && !x.IsDeleted);
             // Se esiste un utente con quella email ritorno l'errore
             if (user is not null)
             {
@@ -44,6 +45,32 @@ namespace ToDoProject.Server.Business
             userManager.Insert(user);
             result.User = model;
             result.User.Id = user.Id;
+            result.IsSuccesfulRegistration = true;
+            return result;
+        }
+
+        public RegistrationResponse Login(LoginRequest request)
+        {
+            var result = new RegistrationResponse();
+            // Mi prendo il primo utente con quella email che non sia eliminato
+            var user = _repository.GetFirstOrDefault(x => x.Email.Equals(request.Email) && !x.IsDeleted);
+            //Se non esiste nessun utente ritorno l'errore
+            if(user is null)
+            {
+                result.IsSuccesfulRegistration = false;
+                result.Error = "Non esiste nessun utente con quella email";
+                return result;
+            }
+            // Se la password inserita non corrisponde a quella dell'utente
+            // non posso far autenticare l'utente
+            if(!user.Password.Equals(request.Password)) 
+            {
+                result.IsSuccesfulRegistration = false;
+                result.Error = "La password è errata";
+                return result;
+            }
+            //Arrivato qui sono sicuro che l'utente abbia inserito le giuste credenziali
+            result.User = UserDTO.Create(user);
             result.IsSuccesfulRegistration = true;
             return result;
         }

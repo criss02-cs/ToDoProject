@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ToDoProject.Client.Models;
 using ToDoProject.Models.DTO;
@@ -8,32 +9,57 @@ namespace ToDoProject.Client
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
         private ILocalStorageService _localStorage;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
         public CustomAuthenticationStateProvider(ILocalStorageService localStorage)
         {
             _localStorage = localStorage;
+            _jwtSecurityTokenHandler = new();
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var currentUser = await _localStorage.GetItemAsync<UserLocalStorage>("currentuser");
-            ClaimsIdentity identity;
-            if (currentUser != null && currentUser.User != null)
+            try
             {
-                identity = new ClaimsIdentity(new[]
+                var currentUser = await _localStorage.GetItemAsync<UserLocalStorage>("currentuser");
+                Console.WriteLine(currentUser?.User?.Name);
+                ClaimsIdentity identity;
+                // Controllo che effettivamente ci siano dei dati all'interno dello storage
+                if (currentUser != null && currentUser.User != null && !string.IsNullOrWhiteSpace(currentUser.Token))
                 {
-                    new Claim(ClaimTypes.Email, currentUser.User.Email),
-                    new Claim(ClaimTypes.Name , currentUser.User.Name),
-                    new Claim(ClaimTypes.Role, currentUser.User.UserType.ToString()),
-                });
+                    // Vado a leggermi il token per verificare che non sia scaduto
+                    JwtSecurityToken jwtSecurityToken =
+                        _jwtSecurityTokenHandler.ReadJwtToken(currentUser.Token);
+                    var expires = jwtSecurityToken.ValidTo;
+                    if (expires < DateTime.UtcNow)
+                    {
+                        await _localStorage.RemoveItemAsync("currentuser");
+                        identity = new ClaimsIdentity();
+                    }
+                    else
+                    {
+                        identity = new ClaimsIdentity(new[]
+                        {
+                            new Claim(ClaimTypes.Email, currentUser.User.Email),
+                            new Claim(ClaimTypes.Name , currentUser.User.Name),
+                            new Claim(ClaimTypes.Role, currentUser.User.UserType.ToString()),
+                        }, "apiauth_type");
+                    }
+                }
+                else
+                {
+                    identity = new ClaimsIdentity();
+                }
+                //identity = new ClaimsIdentity();
+                var user = new ClaimsPrincipal(identity);
+                return new AuthenticationState(user);
             }
-            else
+            catch (Exception)
             {
-                identity = new ClaimsIdentity();
+                return new AuthenticationState(
+                                    new ClaimsPrincipal(
+                                        new ClaimsIdentity()));
             }
-            //identity = new ClaimsIdentity();
-            var user = new ClaimsPrincipal(identity);
-            return await Task.FromResult(new AuthenticationState(user));
         }
 
         public void MarkUserAsAuthenticated(UserDTO user)

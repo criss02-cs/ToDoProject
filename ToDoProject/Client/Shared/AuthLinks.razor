@@ -3,12 +3,33 @@
 @inject NavigationManager NavigationManager
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name
-        <a @onclick="(() => Logout())">Log out</a>
+        @*Hello, @context.User.Identity.Name
+        <a @onclick="(() => Logout())">Log out</a>*@
+        <MudToolBar>
+            <MudSpacer />
+            <MudIcon Icon="@Icons.Material.Filled.Notifications"/>
+            <MudMenu ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                <ActivatorContent>
+                    <MudMenuItem IconSize="Size.Medium" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Person">
+                        <div style="font-size: 15px; padding: 0; margin-left: -25px; margin-top: 5px">
+                            @context.User.Identity.Name
+                        </div>
+                    </MudMenuItem>
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem IconSize="Size.Medium" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Person">
+                        Account
+                    </MudMenuItem>
+                    <MudMenuItem IconSize="Size.Medium" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Logout" OnClick="Logout">
+                        Logout
+                    </MudMenuItem>
+                </ChildContent>
+            </MudMenu>
+        </MudToolBar>
     </Authorized>
     <NotAuthorized>
-        <a href="Registration">Register</a>
-        @*<a href="Login">Log in</a>*@
+        <a href="/registration">Registrati</a>
+        <a href="/">Accedi</a>
     </NotAuthorized>
 </AuthorizeView>
 

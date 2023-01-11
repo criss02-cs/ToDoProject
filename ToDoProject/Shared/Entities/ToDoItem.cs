@@ -17,6 +17,7 @@ namespace ToDoProject.Models.Entities
         public ToDoPriority Priority { get; set; }
         [Required]
         public ToDoType Type { get; set; }
+        public DateTime? EndDate { get; set; }
         [Required]
         public Guid UserId { get; set; }
         public virtual User? User { get; set; }

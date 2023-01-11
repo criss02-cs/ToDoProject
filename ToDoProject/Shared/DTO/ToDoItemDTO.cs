@@ -15,6 +15,7 @@ namespace ToDoProject.Models.DTO
         public string? Description { get; set; }
         public ToDoPriority Priority { get; set; }
         public ToDoType Type { get; set; }
+        public DateTime? EndDate { get; set; }
         public Guid UserId { get; set; }
         public string? UserName { get; set; }
 
@@ -28,7 +29,8 @@ namespace ToDoProject.Models.DTO
                 Priority = entity.Priority,
                 Type = entity.Type,
                 UserId = entity.UserId,
-                UserName = entity.User?.Name
+                UserName = entity.User?.Name,
+                EndDate = entity.EndDate,
             };
         }
 
@@ -42,6 +44,7 @@ namespace ToDoProject.Models.DTO
                 Priority = model.Priority,
                 Type = model.Type,
                 UserId = model.UserId,
+                EndDate = model.EndDate,
             };
         }
     }

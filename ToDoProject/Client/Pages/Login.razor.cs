@@ -45,7 +45,7 @@ namespace ToDoProject.Client.Pages
                 };
                 // Salvo l'utente e il token nel local storage
                 // Marco l'utente come autenticato così da poter accedere ai suoi dati anche da altre pagine
-                ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(result.User);
+                ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(user);
                 // Torno alla home
                 NavigationManager.NavigateTo("/home");
                 //Console.WriteLine(result.User?.Name);

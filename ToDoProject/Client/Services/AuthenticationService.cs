@@ -12,7 +12,7 @@ namespace ToDoProject.Client.Services
     {
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
-        private ILocalStorageService _localStorageService;
+        private readonly ILocalStorageService _localStorageService;
 
         public AuthenticationService(HttpClient client, ILocalStorageService localStorageService)
         {
@@ -28,7 +28,12 @@ namespace ToDoProject.Client.Services
             if(loginResult.IsSuccessStatusCode)
             {
                 var result = JsonSerializer.Deserialize<RegistrationResponse>(loginContent, _options);
-                await _localStorageService.SetItemAsync("currentuser", result);
+                var user = new UserLocalStorage
+                {
+                    Token = result.Token,
+                    User = result.User
+                };
+                await _localStorageService.SetItemAsync("currentuser", user);
                 return result;
             }
             return new RegistrationResponse { IsSuccesfulRegistration = false };

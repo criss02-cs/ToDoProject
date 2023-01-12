@@ -10,6 +10,7 @@ namespace ToDoProject.Client
     {
         private ILocalStorageService _localStorage;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+        public UserLocalStorage CurrentUser { get; private set; }
 
         public CustomAuthenticationStateProvider(ILocalStorageService localStorage)
         {
@@ -44,6 +45,7 @@ namespace ToDoProject.Client
                             new Claim(ClaimTypes.Name , currentUser.User.Name),
                             new Claim(ClaimTypes.Role, currentUser.User.UserType.ToString()),
                         }, "apiauth_type");
+                        CurrentUser = currentUser;
                     }
                 }
                 else
@@ -62,15 +64,16 @@ namespace ToDoProject.Client
             }
         }
 
-        public void MarkUserAsAuthenticated(UserDTO user)
+        public void MarkUserAsAuthenticated(UserLocalStorage current)
         {
             var identity = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name , user.Name),
-                new Claim(ClaimTypes.Role, user.UserType.ToString()),
+                new Claim(ClaimTypes.Email, current.User.Email),
+                new Claim(ClaimTypes.Name , current.User.Name),
+                new Claim(ClaimTypes.Role, current.User.UserType.ToString()),
             }, "apiauth_type");
             var u = new ClaimsPrincipal(identity);
+            CurrentUser = current;
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(u)));
         }
 

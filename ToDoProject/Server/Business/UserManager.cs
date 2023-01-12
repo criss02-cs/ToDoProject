@@ -18,18 +18,25 @@ namespace ToDoProject.Server.Business
 
         public IList<UserDTO>? GetUsers()
         {
-            var user = _repository.Get(x => !x.IsDeleted, includes: x => x.ToDoItems);
-            if (user.Count > 0)
+            try
             {
-                var usersDto = new List<UserDTO>();
-                foreach (var item in user)
+                var user = _repository.Get(x => !x.IsDeleted, includes: x => x.ToDoItems);
+                if (user.Count > 0)
                 {
-                    var userDto = UserDTO.Create(item);
-                    usersDto.Add(userDto);
+                    var usersDto = new List<UserDTO>();
+                    foreach (var item in user)
+                    {
+                        var userDto = UserDTO.Create(item);
+                        usersDto.Add(userDto);
+                    }
+                    return usersDto;
                 }
-                return usersDto;
+                return new List<UserDTO>();
             }
-            return null;
+            catch (Exception)
+            {
+                return new List<UserDTO>();
+            }
         }
 
         public bool InsertDTO(UserDTO model)

@@ -30,8 +30,8 @@ namespace ToDoProject.Client.Services
                 var result = JsonSerializer.Deserialize<RegistrationResponse>(loginContent, _options);
                 var user = new UserLocalStorage
                 {
-                    Token = result.Token,
-                    User = result.User
+                    Token = result?.Token,
+                    User = result?.User
                 };
                 await _localStorageService.SetItemAsync("currentuser", user);
                 return result;

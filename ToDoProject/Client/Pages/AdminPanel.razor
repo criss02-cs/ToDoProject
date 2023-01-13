@@ -21,12 +21,20 @@
     {
         //Vado a prendermi i dati degli utenti
         var dialog = DialogService.Show<LoadingDialog>("Caricamento degli utenti");
-        var result = await dialog.Result;
-        Console.WriteLine(result.ToString());
-        await Task.Delay(1500);
         var response = await UserService.GetAllUsers();
         Users = response;
         dialog.Close();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            var dialog = DialogService.Show<LoadingDialog>("Caricamento degli utenti");
+            var response = await UserService.GetAllUsers();
+            Users = response;
+            dialog.Close();
+        }
     }
 
     private void ShowDialog()

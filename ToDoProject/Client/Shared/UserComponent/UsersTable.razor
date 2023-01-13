@@ -4,13 +4,15 @@
 @if (Users?.Count > 0)
 {
         <h3>Numero di utenti registrati: @Users.Count</h3>
-        <MudTable Items="@Users" SortLabel="Sort By">
+        <MudTable Items="@Users" SortLabel="Sort By" MultiSelection="true" @bind-SelectedItems="_selectedUsers"
+            CustomFooter="true">
               <HeaderContent>
-                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Name)">Nome</MudTableSortLabel></MudTh>
-                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Surname)">Surname</MudTableSortLabel></MudTh>
-                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
-                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.BirthDate)">Data di nascita</MudTableSortLabel></MudTh>
-                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.UserType)">Tipo utente</MudTableSortLabel></MudTh>
+                          <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Name)">Nome</MudTableSortLabel></MudTh>
+                                  <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Surname)">Surname</MudTableSortLabel></MudTh>
+                                  <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
+                                  <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.BirthDate)">Data di nascita</MudTableSortLabel></MudTh>
+                                  <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.UserType)">Tipo utente</MudTableSortLabel></MudTh>
+                                  <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.NumberOfTasks)">Numero di task</MudTableSortLabel></MudTh>
               </HeaderContent>
               <RowTemplate>
                   <MudTd DataLabel="Name">@context.Name</MudTd>
@@ -20,9 +22,16 @@
                     <MudDatePicker Editable="false" @bind-Date="@context.BirthDate"/>
                   </MudTd>
                   <MudTd DataLabel="UserType">@Enum.GetName(context.UserType)</MudTd>
+                  <MudTd DataLabel="NumberOfTasks">@context.NumberOfTasks</MudTd>
               </RowTemplate>
+              <FooterContent>
+                          <MudTFootRow IgnoreCheckbox="true">
+                            <MudTd colspan="5">Utenti selezionati: @_selectedUsers?.Count</MudTd>
+                                <MudTd><MudButton>Aggiungi un nuovo utente</MudButton></MudTd>
+                      </MudTFootRow>
+              </FooterContent>
               <PagerContent>
-                  <MudTablePager PageSizeOptions="new int[] {10, 50}" RowsPerPageString="Righe per pagina"/>
+                  <MudTablePager PageSizeOptions="new int[] {10, 50}" RowsPerPageString="Righe per pagina" />
               </PagerContent>
         </MudTable>
 }

@@ -1,0 +1,32 @@
+﻿@using ToDoProject.Models.DTO;
+
+
+@if (Users?.Count > 0)
+{
+        <h3>Numero di utenti registrati: @Users.Count</h3>
+        <MudTable Items="@Users" SortLabel="Sort By">
+              <HeaderContent>
+                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Name)">Nome</MudTableSortLabel></MudTh>
+                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Surname)">Surname</MudTableSortLabel></MudTh>
+                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
+                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.BirthDate)">Data di nascita</MudTableSortLabel></MudTh>
+                      <MudTh><MudTableSortLabel SortBy="new Func<UserDTO, object>(x=>x.UserType)">Tipo utente</MudTableSortLabel></MudTh>
+              </HeaderContent>
+              <RowTemplate>
+                  <MudTd DataLabel="Name">@context.Name</MudTd>
+                  <MudTd DataLabel="Surname">@context.Surname</MudTd>
+                  <MudTd DataLabel="Email">@context.Email</MudTd>
+                  <MudTd DataLabel="BirthDate">
+                    <MudDatePicker Editable="false" @bind-Date="@context.BirthDate"/>
+                  </MudTd>
+                  <MudTd DataLabel="UserType">@Enum.GetName(context.UserType)</MudTd>
+              </RowTemplate>
+              <PagerContent>
+                  <MudTablePager PageSizeOptions="new int[] {10, 50}" RowsPerPageString="Righe per pagina"/>
+              </PagerContent>
+        </MudTable>
+}
+else
+{
+        <h3>Non ci sono utenti</h3>
+}

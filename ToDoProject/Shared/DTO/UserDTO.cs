@@ -13,6 +13,7 @@ namespace ToDoProject.Models.DTO
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
+        public string? Surname { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
@@ -31,6 +32,7 @@ namespace ToDoProject.Models.DTO
                 BirthDate = entity.BirthDate,
                 UserType = entity.UserType,
                 NumberOfTasks = entity.ToDoItems?.Count,
+                Surname= entity.Surname,
             };
         }
 
@@ -44,6 +46,7 @@ namespace ToDoProject.Models.DTO
                 Password = model.Password,
                 BirthDate = model.BirthDate,
                 UserType = model.UserType,
+                Surname= model.Surname,
             };
         }
     }

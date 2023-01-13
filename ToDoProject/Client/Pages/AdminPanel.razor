@@ -1,0 +1,36 @@
+﻿@page "/adminpanel"
+@using Microsoft.AspNetCore.Authorization;
+@using ToDoProject.Client.Services.Users;
+@using ToDoProject.Client.Shared.Dialogs;
+@using ToDoProject.Client.Shared.UserComponent
+@using ToDoProject.Models.DTO;
+@inject IUsersService UserService;
+@inject IDialogService DialogService;
+@attribute [Authorize]
+
+
+<UsersTable Users="@Users"/>
+        <MudButton OnClick="ShowDialog">Clicca qui</MudButton>
+
+
+@code {
+    private IList<UserDTO> Users { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Vado a prendermi i dati degli utenti
+        var dialog = DialogService.Show<LoadingDialog>("Caricamento degli utenti");
+        var result = await dialog.Result;
+        Console.WriteLine(result.ToString());
+        await Task.Delay(1500);
+        var response = await UserService.GetAllUsers();
+        Users = response;
+        dialog.Close();
+    }
+
+    private void ShowDialog()
+    {
+        var dialog = DialogService.Show<LoadingDialog>("Caricamento degli utenti");
+    }
+}

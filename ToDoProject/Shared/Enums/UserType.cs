@@ -10,6 +10,7 @@ namespace ToDoProject.Models.Enums
     {
         ADMIN,
         DEVELOPER,
-        NORMAL
+        NORMAL,
+        TESTER,
     }
 }

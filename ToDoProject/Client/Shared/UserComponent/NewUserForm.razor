@@ -1,0 +1,43 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using ToDoProject.Models.Enums;
+
+
+<EditForm Model="@_user" OnValidSubmit="@(() => OnValidSubmit(_user))" class="col-12">
+    <DataAnnotationsValidator/>
+    <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <MudCardContent>
+                            <MudTextField T="string" Label="Nome" Required="true" RequiredError="Il nome è obbligatorio!" @bind-Value="@_user.Name"/>
+                            <MudTextField T="string" Label="Cognome" Required="true" RequiredError="Il cognome è obbligatorio" @bind-Value="@_user.Surname"/>
+                            <MudTextField T="string" Label="Email" Required="true" RequiredError="L'indirizzo email è obbligatorio" @bind-Value="@_user.Email"
+                                      Validation="@(new EmailAddressAttribute() {ErrorMessage = "L'indirizzo email non è valido"})"/>
+                            <MudTextField T="string" Label="Password" HelperText="Scegli una password forte"
+                                      InputType="InputType.Password" @bind-Value="@_user.Password"
+                                      Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                                      RequiredError="La password è obbligatoria!"/>
+                            @if(CurrentUser?.User?.UserType == UserType.ADMIN)
+                            {
+                                <MudSelect T="string" Label="Ruolo" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" 
+                                    MultiSelection="false" SelectedValues="SelectedUserType" Required="true" 
+                                    RequiredError="L'utente deve avere un ruolo">
+                                    @foreach (string type in @Enum.GetNames(typeof(UserType)))
+                                    {
+                                        <MudSelectItem Value="@type.ToLower()" T="string"/>
+                                    }
+                                </MudSelect>
+                            }
+                    <MudDatePicker Editable="true" @bind-Date="@_user.BirthDate" Placeholder="Seleziona la tua data di nascita" />                    
+                    </MudCardContent>
+                    <MudCardActions>
+                            <div class="d-flex m-auto">
+                                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!IsValid())" Color="Color.Primary" 
+                                    Class="ml-auto" Style="margin-left: 10px">Aggiungi</MudButton>
+                                    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="true" Color="Color.Primary" 
+                                    Class="ml-auto" Style="margin-left: 10px">@context.Validate()</MudButton>
+                            </div>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+</EditForm>

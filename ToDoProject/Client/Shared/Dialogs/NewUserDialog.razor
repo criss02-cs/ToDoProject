@@ -1,0 +1,32 @@
+﻿@using ToDoProject.Client.Models;
+@using ToDoProject.Client.Shared.UserComponent;
+@using ToDoProject.Models.DTO;
+@using ToDoProject.Client.Services.Users;
+@inject IUsersService UserService;
+@inject IDialogService DialogService;
+<MudDialog>
+    <DialogContent>
+        <center>
+            <NewUserForm OnValidSubmit="OnValidSubmit"/>
+        </center>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] 
+    MudDialogInstance? MudDialog { get; set; }
+
+    private async void OnValidSubmit(UserDTO userDTO)
+    {
+        var dialog = DialogService.Show<LoadingDialog>("Salvataggio dell'utente");
+        var response = await UserService.AddUser(userDTO);
+        dialog.Close();
+        if(response)
+        {
+            MudDialog?.Close();
+        }
+        // Dai messaggio di errore nel salvataggio
+    }
+
+    
+}

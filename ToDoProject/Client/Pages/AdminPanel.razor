@@ -9,7 +9,7 @@
 @attribute [Authorize]
 
 
-<UsersTable Users="@Users"/>
+<UsersTable Users="@Users" OnAggiungiClick="OnAggiungiClick"/>
         <MudButton OnClick="ShowDialog">Clicca qui</MudButton>
 
 
@@ -28,13 +28,18 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             var dialog = DialogService.Show<LoadingDialog>("Caricamento degli utenti");
             var response = await UserService.GetAllUsers();
             Users = response;
             dialog.Close();
         }
+    }
+
+    private void OnAggiungiClick()
+    {
+        DialogService.Show<NewUserDialog>("Nuovo utente", new DialogOptions { CloseOnEscapeKey = true, FullWidth = true, CloseButton = true });
     }
 
     private void ShowDialog()

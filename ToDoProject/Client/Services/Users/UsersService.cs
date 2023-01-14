@@ -36,6 +36,27 @@ namespace ToDoProject.Client.Services.Users
             }
         }
 
+        public async Task<bool> AddUser(UserDTO userDTO)
+        {
+            try
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUser?.Token);
+                var response = await _client.PostAsJsonAsync<UserDTO>("api/users/AddNewUser", userDTO, _options);
+                var content = await response.Content.ReadAsStringAsync();
+                if(response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<bool>(content);
+                    return result;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+        }
+
 
         private UserLocalStorage? CurrentUser
         {

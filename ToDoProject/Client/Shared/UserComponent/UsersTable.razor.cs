@@ -24,6 +24,8 @@ namespace ToDoProject.Client.Shared.UserComponent
     {
         [Parameter]
         public IList<UserDTO>? Users { get; set; }
+        [Parameter]
+        public EventCallback OnAggiungiClick { get; set; }
 
         private HashSet<UserDTO>? _selectedUsers = new();
     }

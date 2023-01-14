@@ -16,16 +16,15 @@
                                       InputType="InputType.Password" @bind-Value="@_user.Password"
                                       Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
                                       RequiredError="La password è obbligatoria!"/>
-                            @if(CurrentUser?.User?.UserType == UserType.ADMIN)
+                            @if(CurrentUser?.User?.UserType == UserType.Admin)
                             {
-                                <MudSelect T="string" Label="Ruolo" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" 
-                                    MultiSelection="false" SelectedValues="SelectedUserType" Required="true" 
-                                    RequiredError="L'utente deve avere un ruolo">
-                                    @foreach (string type in @Enum.GetNames(typeof(UserType)))
-                                    {
-                                        <MudSelectItem Value="@type.ToLower()" T="string"/>
-                                    }
-                                </MudSelect>
+                                    <MudSelect @bind-Value="@_user.UserType" Label="Ruolo" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" Required="true"
+                                        RequiredError="L'utente deve avere un ruolo" >
+                                        @foreach (UserType type in Enum.GetValues(typeof(UserType)))
+                                        {
+                                                    <MudSelectItem Value="@type"/>
+                                        }
+                                    </MudSelect>
                             }
                     <MudDatePicker Editable="true" @bind-Date="@_user.BirthDate" Placeholder="Seleziona la tua data di nascita" />                    
                     </MudCardContent>

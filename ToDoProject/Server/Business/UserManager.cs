@@ -1,4 +1,5 @@
-﻿using ToDoProject.Models.DTO;
+﻿using ToDoProject.Models;
+using ToDoProject.Models.DTO;
 using ToDoProject.Models.DTO.Auth;
 using ToDoProject.Models.Entities;
 using ToDoProject.Server.Repositories;
@@ -46,11 +47,42 @@ namespace ToDoProject.Server.Business
             var righe = _ctx.SaveChanges();
             return righe > 0;
         }
-        public bool Insert(User entity)
+        public WebApiResponse<bool> Insert(User entity)
         {
-            _repository.Insert(entity);
-            var righe = _ctx.SaveChanges();
-            return righe > 0;
+            try
+            {
+                // Controllo se non c'è già un utente con questa email
+                var user = _repository.Get(x => !x.IsDeleted && x.Email.Equals(entity.Email));
+                // Se non ci sono utenti con quella email procedo a inserire l'utente
+                if (user.Count == 0)
+                {
+                    entity.CreatedDate = DateTime.Now;
+                    entity.UpdatedDate = DateTime.Now;
+                    _repository.Insert(entity);
+                    var righe = _ctx.SaveChanges();
+                    return new WebApiResponse<bool>()
+                    {
+                        Result = righe > 0,
+                        IsSuccesful = true,
+                        Error = ""
+                    };
+                }
+                return new WebApiResponse<bool>
+                {
+                    Result = false,
+                    IsSuccesful = false,
+                    Error = "Esiste già un utente con quella email!"
+                };
+            }
+            catch (Exception e)
+            {
+                return new WebApiResponse<bool>
+                {
+                    Result = false,
+                    IsSuccesful = false,
+                    Error = e.Message
+                };
+            }
         }
 
         public UserDTO GetUserById(Guid id)

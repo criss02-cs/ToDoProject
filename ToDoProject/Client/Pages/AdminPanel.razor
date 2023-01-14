@@ -37,9 +37,15 @@
         }
     }
 
-    private void OnAggiungiClick()
+    private async void OnAggiungiClick()
     {
-        DialogService.Show<NewUserDialog>("Nuovo utente", new DialogOptions { CloseOnEscapeKey = true, FullWidth = true, CloseButton = true });
+        var dialog = DialogService.Show<NewUserDialog>("Nuovo utente", new DialogOptions { CloseOnEscapeKey = true, FullWidth = true, CloseButton = true });
+        var result = await dialog.Result;
+        var isCancelled = result.Canceled;
+        if(isCancelled)
+        {
+            StateHasChanged();
+        }
     }
 
     private void ShowDialog()

@@ -36,7 +36,7 @@ namespace ToDoProject.Client.Shared.UserComponent
 
         protected override void OnInitialized()
         {
-            _user.UserType = UserType.NORMAL;
+            _user.UserType = UserType.Normal;
             _editContext = new EditContext(_user);
         }
 

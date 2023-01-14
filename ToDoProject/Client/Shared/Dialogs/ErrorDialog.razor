@@ -1,0 +1,27 @@
+﻿<MudDialog>
+    <DialogContent>
+       <MudGrid>
+           <MudItem xs="3">
+               <center>
+                   <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error"/>
+               </center>
+           </MudItem>
+           <MudItem xs="9">
+               <MudText>@ErrorText</MudText>
+           </MudItem>
+       </MudGrid>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance? MudDialog { get; set; }
+
+    [Parameter]
+    public string ErrorText { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine(ErrorText);
+    }
+}

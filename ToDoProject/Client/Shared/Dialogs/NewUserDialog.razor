@@ -13,20 +13,34 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] 
+    [CascadingParameter]
     MudDialogInstance? MudDialog { get; set; }
+
 
     private async void OnValidSubmit(UserDTO userDTO)
     {
         var dialog = DialogService.Show<LoadingDialog>("Salvataggio dell'utente");
         var response = await UserService.AddUser(userDTO);
         dialog.Close();
-        if(response)
+        if (response.IsSuccesful && response.Result)
         {
             MudDialog?.Close();
         }
         // Dai messaggio di errore nel salvataggio
+        else
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("ErrorText", response.Error);
+            Console.WriteLine(response.Error);
+            Console.WriteLine(response.IsSuccesful);
+            Console.WriteLine(response.Result);
+            var options = new DialogOptions()
+                {
+                    CloseButton = true,
+                    CloseOnEscapeKey = true,
+                    FullWidth = true
+                };
+            DialogService.Show<ErrorDialog>("Errore", parameters, options);
+        }
     }
-
-    
 }

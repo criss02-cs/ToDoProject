@@ -39,7 +39,7 @@ namespace ToDoProject.Server.Business
                 IsDeleted = false,
                 BirthDate = request.BirthDate,
                 Surname = request.Surname,
-                UserType = Models.Enums.UserType.NORMAL,
+                UserType = Models.Enums.UserType.Normal,
             };
             var userManager = new UserManager(_ctx);
             var model = UserDTO.Create(user);

@@ -8,9 +8,9 @@ namespace ToDoProject.Models.Enums
 {
     public enum UserType
     {
-        ADMIN,
-        DEVELOPER,
-        NORMAL,
-        TESTER,
+        Admin,
+        Developer,
+        Normal,
+        Tester,
     }
 }

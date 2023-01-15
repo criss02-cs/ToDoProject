@@ -1,16 +1,20 @@
 ﻿<MudDialog>
     <DialogContent>
-       <MudGrid>
-           <MudItem xs="3">
-               <center>
-                   <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error"/>
-               </center>
-           </MudItem>
-           <MudItem xs="9">
-               <MudText>@ErrorText</MudText>
-           </MudItem>
-       </MudGrid>
+        <MudGrid>
+            <MudItem xs="3">
+                <center>
+                    <MudIcon Icon="@Icons.Material.Filled.Error" Size="Size.Large" Color="Color.Error" />
+                </center>
+            </MudItem>
+            <MudItem xs="9">
+                <MudText>@ErrorText</MudText>
+            </MudItem>
+        </MudGrid>
     </DialogContent>
+    <DialogActions>
+        <MudButton ButtonType="ButtonType.Button" Disabled="true"
+                   Color="Color.Transparent" Class="ml-auto"></MudButton>
+    </DialogActions>
 </MudDialog>
 
 @code {

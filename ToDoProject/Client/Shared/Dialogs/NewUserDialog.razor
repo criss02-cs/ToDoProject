@@ -31,14 +31,11 @@
         {
             var parameters = new DialogParameters();
             parameters.Add("ErrorText", response.Error);
-            Console.WriteLine(response.Error);
-            Console.WriteLine(response.IsSuccesful);
-            Console.WriteLine(response.Result);
             var options = new DialogOptions()
                 {
                     CloseButton = true,
                     CloseOnEscapeKey = true,
-                    FullWidth = true
+                    MaxWidth = MaxWidth.ExtraSmall
                 };
             DialogService.Show<ErrorDialog>("Errore", parameters, options);
         }

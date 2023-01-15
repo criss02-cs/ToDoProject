@@ -18,6 +18,8 @@ namespace ToDoProject.Client.Pages
         public ILocalStorageService localStorage { get; set; }
         [Inject]
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+        [Inject]
+        public IDialogService DialogService { get; set; }
 
         private LoginRequest _request = new LoginRequest();
         public bool ShowErrors { get; set; } = false;
@@ -54,6 +56,19 @@ namespace ToDoProject.Client.Pages
         public void NavigateToRegister()
         {
             NavigationManager.NavigateTo("/registration");
+        }
+
+        public void TestDialog()
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("ErrorText", "Esiste già un utente con quella email!");
+            var options = new DialogOptions()
+            {
+                CloseButton = true,
+                CloseOnEscapeKey = true,
+                //FullWidth= true,
+            };
+            DialogService.Show<ErrorDialog>("Errore", parameters, options);
         }
     }
 }

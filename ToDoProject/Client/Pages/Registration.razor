@@ -26,12 +26,14 @@
                             <MudTextField T="string" Label="Email" Required="true" RequiredError="L'indirizzo email è obbligatorio" @bind-Value="@_request.Email"
                                       Validation="@(new EmailAddressAttribute() {ErrorMessage = "L'indirizzo email non è valido"})"/>
                             <MudTextField T="string" Label="Password" HelperText="Scegli una password forte"
-                                      InputType="InputType.Password" @bind-Value="@_request.Password"
+                                  InputType="@PasswordInput" @bind-Value="@_request.Password"
                                       Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
-                                      RequiredError="La password è obbligatoria!"/>
+                                  RequiredError="La password è obbligatoria!" AdornmentIcon="@PasswordInputIcon"
+                                  Adornment="Adornment.End" OnAdornmentClick="ShowHidePassword" />
                             <MudTextField T="string" @bind-Value="@_request.ConfirmPassword"
-                                      Label="Password" HelperText="Reinserisci la password" InputType="InputType.Password"
-                                      Validation="@(new Func<string, string>(PasswordMatch))"/>
+                                  Label="Conferma Password" HelperText="Reinserisci la password" InputType="@ConfirmPasswordInput"
+                                  Validation="@(new Func<string, string>(PasswordMatch))" AdornmentIcon="@ConfirmPasswordInputIcon"
+                                  Adornment="Adornment.End" OnAdornmentClick="ShowHideConfirmPassword" />
                             <MudDatePicker Label="Data di nascita" Editable="true" @bind-Date="@_request.BirthDate" Placeholder="Seleziona la tua data di nascita" />                    
                     </MudCardContent>
                     <MudCardActions>

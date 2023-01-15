@@ -36,6 +36,44 @@ namespace ToDoProject.Client.Pages
 
         public bool IsLoading { get; set; } = false;
         public string? Error { get; set; }
+        private bool showPassword = false;
+        private bool showConfirmPassword = false;
+
+        public InputType PasswordInput { get; set; } = InputType.Password;
+        public InputType ConfirmPasswordInput { get; set; } = InputType.Password;
+        public string PasswordInputIcon { get; set; } = Icons.Material.Filled.VisibilityOff;
+        public string ConfirmPasswordInputIcon { get; set; } = Icons.Material.Filled.VisibilityOff;
+
+        public void ShowHidePassword()
+        {
+            if (showPassword)
+            {
+                showPassword = false;
+                PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+                PasswordInput = InputType.Password;
+            }
+            else
+            {
+                showPassword = true;
+                PasswordInputIcon = Icons.Material.Filled.Visibility;
+                PasswordInput = InputType.Text;
+            }
+        }
+        public void ShowHideConfirmPassword()
+        {
+            if (showConfirmPassword)
+            {
+                showConfirmPassword = false;
+                ConfirmPasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+                ConfirmPasswordInput = InputType.Password;
+            }
+            else
+            {
+                showConfirmPassword = true;
+                ConfirmPasswordInputIcon = Icons.Material.Filled.Visibility;
+                ConfirmPasswordInput = InputType.Text;
+            }
+        }
 
         public void NavigateToLogin()
         {

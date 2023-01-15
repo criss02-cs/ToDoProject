@@ -5,40 +5,41 @@
 @if (ShowErrors && Error != "")
 {
     <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true"
-        CloseIconClicked="(() => ShowErrors = false)" Style="margin-bottom: 20px">
+          CloseIconClicked="(() => ShowErrors = false)" Style="margin-bottom: 20px">
         @Error
     </MudAlert>
 }
 @if (!IsLoading)
 {
-        <EditForm Model="@_request" OnValidSubmit="LoginUser">
-            <DataAnnotationsValidator/>
-            <MudGrid>
-                <MudItem xs="12">
-                    <MudCard>
-                        <MudCardHeader>
-                            <h3>Accedi alla tua lista di task</h3>
-                        </MudCardHeader>
-                        <MudCardContent>
-                                <MudTextField T="string" Label="Email" Required="true" RequiredError="L'indirizzo email è obbligatorio" @bind-Value="@_request.Email"
-                                      Validation="@(new EmailAddressAttribute() {ErrorMessage = "L'indirizzo email non è valido"})"/>
-                                <MudTextField T="string" Label="Password"
-                                      InputType="InputType.Password" @bind-Value="@_request.Password" Required="true"
-                                      RequiredError="La password è obbligatoria!"/>                    
-                        </MudCardContent>
-                        <MudCardActions>
-                            <div class="d-flex m-auto">
-                                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Class="ml-auto" Style="margin-right: 10px">Accedi</MudButton>
-                                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="NavigateToRegister" Class="ml-auto" Style="margin-left: 10px">Registrati</MudButton>
-                                @*<MudButton Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="TestDialog" Class="ml-auto" Style="margin-left: 10px">Test dialog</MudButton>*@
-                            </div>
-                        </MudCardActions>
-                    </MudCard>
-                </MudItem>
-            </MudGrid>
-        </EditForm>
+    <EditForm Model="@_request" OnValidSubmit="LoginUser">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12">
+                <MudCard>
+                    <MudCardHeader>
+                        <h3>Accedi alla tua lista di task</h3>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudTextField T="string" Label="Email" Required="true" RequiredError="L'indirizzo email è obbligatorio" @bind-Value="@_request.Email"
+                                  Validation="@(new EmailAddressAttribute() {ErrorMessage = "L'indirizzo email non è valido"})" />
+                        <MudTextField T="string" Label="Password"
+                                  InputType="@PasswordInput" @bind-Value="@_request.Password" Required="true"
+                                  RequiredError="La password è obbligatoria!" AdornmentIcon="@PasswordInputIcon" 
+                                  Adornment="Adornment.End" OnAdornmentClick="ShowHidePassword" />
+                    </MudCardContent>
+                    <MudCardActions>
+                        <div class="d-flex m-auto">
+                            <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Class="ml-auto" Style="margin-right: 10px">Accedi</MudButton>
+                            <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="NavigateToRegister" Class="ml-auto" Style="margin-left: 10px">Registrati</MudButton>
+                            @*<MudButton Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Secondary" @onclick="TestDialog" Class="ml-auto" Style="margin-left: 10px">Test dialog</MudButton>*@
+                        </div>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
 }
 else
 {
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
 }

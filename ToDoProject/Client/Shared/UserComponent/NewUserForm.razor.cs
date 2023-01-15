@@ -34,10 +34,31 @@ namespace ToDoProject.Client.Shared.UserComponent
         [Parameter]
         public Action<UserDTO>? OnValidSubmit { get; set; }
 
+        private bool showPassword = false;
+
+        public InputType PasswordInput { get; set; } = InputType.Password;
+        public string PasswordInputIcon { get; set; } = Icons.Material.Filled.VisibilityOff;
+
         protected override void OnInitialized()
         {
             _user.UserType = UserType.Normal;
             _editContext = new EditContext(_user);
+        }
+
+        public void ShowHidePassword()
+        {
+            if (showPassword)
+            {
+                showPassword = false;
+                PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+                PasswordInput = InputType.Password;
+            }
+            else
+            {
+                showPassword = true;
+                PasswordInputIcon = Icons.Material.Filled.Visibility;
+                PasswordInput = InputType.Text;
+            }
         }
 
         private IEnumerable<string> PasswordStrength(string pw)

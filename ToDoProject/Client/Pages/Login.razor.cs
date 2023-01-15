@@ -22,10 +22,30 @@ namespace ToDoProject.Client.Pages
         public IDialogService DialogService { get; set; }
 
         private LoginRequest _request = new LoginRequest();
+        private bool showPassword = false;
+
+        public InputType PasswordInput { get; set; } = InputType.Password;
+        public string PasswordInputIcon { get; set; } = Icons.Material.Filled.VisibilityOff;
         public bool ShowErrors { get; set; } = false;
 
         public bool IsLoading { get; set; } = false;
         public string? Error { get; set; }
+
+        public void ShowHidePassword()
+        {
+            if (showPassword)
+            {
+                showPassword = false;
+                PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+                PasswordInput = InputType.Password;
+            }
+            else
+            {
+                showPassword = true;
+                PasswordInputIcon = Icons.Material.Filled.Visibility;
+                PasswordInput = InputType.Text;
+            }
+        }
 
         public async Task LoginUser()
         {

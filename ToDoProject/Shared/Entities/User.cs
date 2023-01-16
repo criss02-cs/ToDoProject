@@ -21,6 +21,7 @@ namespace ToDoProject.Models.Entities
         public string? Password { get; set; }
         [Required]
         public UserType UserType { get; set; }
+        public bool IsEmailConfirmed { get; set; }
         // Foreign key per le task
         public virtual IList<ToDoItem>? ToDoItems { get; set; }
     }

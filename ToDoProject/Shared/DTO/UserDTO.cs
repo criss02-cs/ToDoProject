@@ -20,6 +20,7 @@ namespace ToDoProject.Models.DTO
         public DateTime? BirthDate { get; set; }
         public UserType UserType { get; set; }
         public long? NumberOfTasks { get; set; }
+        public bool IsEmailConfirmed { get; set; }
 
         public static UserDTO Create(User entity)
         {
@@ -32,7 +33,8 @@ namespace ToDoProject.Models.DTO
                 BirthDate = entity.BirthDate,
                 UserType = entity.UserType,
                 NumberOfTasks = entity.ToDoItems?.Count,
-                Surname= entity.Surname,
+                Surname = entity.Surname,
+                IsEmailConfirmed = entity.IsEmailConfirmed,
             };
         }
 
@@ -46,7 +48,8 @@ namespace ToDoProject.Models.DTO
                 Password = model.Password,
                 BirthDate = model.BirthDate,
                 UserType = model.UserType,
-                Surname= model.Surname,
+                Surname = model.Surname,
+                IsEmailConfirmed = model.IsEmailConfirmed,
             };
         }
     }

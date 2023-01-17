@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ToDoProject.EmailService;
 using ToDoProject.Server;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,12 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true
     };
 });
+//var emailConfig = new EmailConfiguration();
+//builder.Configuration
+//                .GetSection("EmailConfiguration")
+//                .Bind(emailConfig);
+//builder.Services.AddSingleton(emailConfig);
+//builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

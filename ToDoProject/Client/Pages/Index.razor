@@ -1,8 +1,52 @@
 ﻿@page "/home"
 @using Microsoft.AspNetCore.Authorization;
+@using System.Security.Claims;
+@using System.IdentityModel.Tokens.Jwt;
+@using Microsoft.IdentityModel.Tokens;
+@using System.Text;
+@using ToDoProject.Client.Models;
 @attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ISnackbar Snackbar
 
 <PageTitle>Dashboard</PageTitle>
 
-<h1>Le tue task</h1>
+<h1>Le tue task: @CalculateEmailToken()</h1>
 
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!CurrentUser.User.IsEmailConfirmed)
+            {
+                Snackbar.Add("La tua mail ha bisogno di essere confermata", Severity.Warning);
+            }
+        }
+    }
+
+    public string CalculateEmailToken()
+    {
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, CurrentUser.User.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, CurrentUser.User.Id.ToString())
+    };
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JWTAuthentication@777"));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: "https://localhost:7112",
+            //audience: "your_audience",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds
+        );
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public UserLocalStorage CurrentUser
+    {
+        get => (AuthenticationStateProvider as CustomAuthenticationStateProvider).CurrentUser;
+    }
+}

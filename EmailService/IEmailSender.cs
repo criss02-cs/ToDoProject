@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ToDoProject.EmailService
 {
-    internal interface IEmailService
+    public interface IEmailSender
     {
-        void SendEmail(Message message);
-        Task SendEmailAsync(Message message);
+        Task SendEmailAsync(string email, string subject, string message);
     }
 }

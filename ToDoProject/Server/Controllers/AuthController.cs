@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ToDoProject.EmailService;
 using ToDoProject.Models.DTO;
 using ToDoProject.Models.DTO.Auth;
 using ToDoProject.Server.Business;
@@ -17,11 +18,13 @@ namespace ToDoProject.Server.Controllers
     {
         private IConfiguration _configuration;
         private DatabaseContext _ctx;
+        //private readonly IEmailSender _emailSender;
 
         public AuthController(IConfiguration conf, DatabaseContext ctx)
         {
             _configuration = conf;
             _ctx = ctx;
+            //_emailSender = emailSender;
         }
         [HttpPost, Route("Register")]
         public ActionResult<RegistrationResponse> Register([FromBody] RegistrationRequest body)
@@ -34,6 +37,7 @@ namespace ToDoProject.Server.Controllers
             {
                 //do some stuff to take token
                 result.Token = this.CreateToken(result.User);
+                //this.SendConfirmationEmail(result.User.Id, result.User?.Email);
             }
             return Ok(result);
         }
@@ -48,12 +52,36 @@ namespace ToDoProject.Server.Controllers
             {
                 //do some stuff to take token
                 result.Token = this.CreateToken(result.User);
+                this.SendConfirmationEmail(result.User.Email, result.User.Id);
             }
             return Ok(result);
         }
 
+        [HttpPost, Route("SendConfirmationEmail")]
+        public async Task<ActionResult<bool>> SendConfirmationEmailAsync([FromBody] ConfirmationEmailRequest request)
+        {
+            IEmailSender emailSender;
+            var token = this.GenerateEmailConfirmationToken(request.Email, request.UserId);
+            var confirmationLink = Url.Action("ConfirmEmail", "auth", new { token, email = request.Email }, Request.Scheme);
+            var apiKey = _configuration["API:SendGridApiKey"];
+            // Codice per inviare l'email
+            emailSender = new EmailSender(apiKey);
+            await emailSender.SendEmailAsync(request.Email, "Conferma Email", confirmationLink);
+            return Ok(true);
+        }
 
-        private string CreateToken(UserDTO user)
+        private async void SendConfirmationEmail(string email, Guid userId)
+        {
+            IEmailSender emailSender;
+            var token = this.GenerateEmailConfirmationToken(email, userId);
+            var confirmationLink = Url.Action("ConfirmEmail", "auth", new { token, email }, Request.Scheme);
+            var apiKey = _configuration["API:SendGridApiKey"];
+            // Codice per inviare l'email
+            emailSender = new EmailSender(apiKey);
+            await emailSender.SendEmailAsync(email, "Conferma Email", confirmationLink);
+        }
+
+        private string CreateToken(UserDTO? user)
         {
             DateTime issuedAt = DateTime.Now;
             DateTime expires = DateTime.Now.AddMinutes(60);
@@ -80,6 +108,28 @@ namespace ToDoProject.Server.Controllers
                 );
             var tokenString = tokenHandler.WriteToken(token);
             return tokenString;
+        }
+
+        private string GenerateEmailConfirmationToken(string email, Guid userId)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Jti, userId.ToString())
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            //recupero da Web.Config issuer e secret
+            var issuer = _configuration["JWT:Issuer"];
+            var secret = _configuration["JWT:Secret"];
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds
+            );
+            return tokenHandler.WriteToken(token);
         }
     }
 }

@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\EmailService\ToDoProject.EmailService.csproj" />
     <ProjectReference Include="..\..\ToDoProject.Utils\ToDoProject.Utils.csproj" />
     <ProjectReference Include="..\Client\ToDoProject.Client.csproj" />
     <ProjectReference Include="..\Shared\ToDoProject.Models.csproj" />

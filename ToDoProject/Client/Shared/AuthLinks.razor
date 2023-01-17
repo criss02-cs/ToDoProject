@@ -1,6 +1,8 @@
 ﻿@using System.Security.Claims
+@using ToDoProject.Client.Models;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
 <AuthorizeView>
     <Authorized>
         @*Hello, @context.User.Identity.Name
@@ -41,5 +43,11 @@
     {
         ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggetOut();
         NavigationManager.NavigateTo("/");
+    }
+
+   
+    public UserLocalStorage CurrentUser
+    {
+        get => (AuthenticationStateProvider as CustomAuthenticationStateProvider).CurrentUser;
     }
 }

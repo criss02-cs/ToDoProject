@@ -1,0 +1,107 @@
+﻿@page "/auth/ConfirmEmail/{token}/{email}"
+@using System.IdentityModel.Tokens.Jwt;
+@using Microsoft.IdentityModel.Tokens;
+@using ToDoProject.Client.Services;
+@using ToDoProject.Models.DTO.Auth;
+@inject NavigationManager NavigationManager;
+@inject IAuthenticationService AuthenticationService;
+
+@if (!isLoading)
+{
+    <MudCard>
+        <MudCardHeader>
+            <h2>Conferma la tua email</h2>
+        </MudCardHeader>
+        <MudCardContent>
+            @if (!isTokenExpired && !string.IsNullOrEmpty(Email))
+            {
+                @if (!isEmailConfirmed)
+                {
+                    <MudText>Clicca il pulsante sottostante per confermare la tua email</MudText>
+                }
+                else
+                {
+                    @if (!isTokenValid)
+                    {
+                        <MudText>La richiesta non è valida, richiedi una nuova richiesta di validazione</MudText>
+                    }
+                    else
+                    {
+                        <MudText>La tua e-mail è stata confermata con successo</MudText>
+                    }
+                }
+            }
+            else
+            {
+                    <MudText>Il token è scaduto, richiedi una nuova richiesta di validazione</MudText>
+            }
+        </MudCardContent>
+        <MudCardActions>
+            @if (!isEmailConfirmed)
+            {
+                <MudButton OnClick="ConfirmEmail" Color="Color.Primary" Icon="fa fa-check">Conferma e-mail</MudButton>
+            }
+            else
+            {
+                <MudButton OnClick="NavigateToLogin" Color="Color.Primary" Icon="fa fa-check">Vai alla pagina di login</MudButton>
+            }
+        </MudCardActions>
+    </MudCard>
+}
+else
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+@code {
+    [Parameter]
+    public string Token { get; set; }
+    [Parameter]
+    public string Email { get; set; }
+
+    private bool isTokenExpired;
+
+    private bool isEmailConfirmed;
+    private bool isTokenValid;
+    private bool isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isTokenExpired = await ValidateToken(Token);
+        isEmailConfirmed = false;
+        isLoading = false;
+        isTokenValid = false;
+    }
+
+    // Nella parte di front end controllo solamente se il token è scaduto oppure
+    private async Task<bool> ValidateToken(string token)
+    {
+        JwtSecurityTokenHandler jwtSecurityTokenHandler = new();
+        JwtSecurityToken jwtSecurityToken =
+                        jwtSecurityTokenHandler.ReadJwtToken(token);
+        var expires = jwtSecurityToken.ValidTo;
+        var currentTime = DateTime.UtcNow;
+        return expires < currentTime;
+    }
+
+    private void NavigateToLogin()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private async void ConfirmEmail()
+    {
+        isLoading = true;
+        var request = new ConfirmEmail
+            {
+                Token = Token,
+                Email = Email,
+                IsEmailConfirmed = false,
+                IsTokenValid = false,
+            };
+        var response = await AuthenticationService.ConfirmEmail(request);
+        isEmailConfirmed = response.IsEmailConfirmed;
+        isTokenValid = response.IsTokenValid;
+        isLoading = false;
+
+    }
+}

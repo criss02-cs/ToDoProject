@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoProject.Models", "ToDoP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoProject.Utils", "ToDoProject.Utils\ToDoProject.Utils.csproj", "{94C1FC73-6BCC-419D-A639-E7CCF5BECDF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoProject.EmailService", "EmailService\ToDoProject.EmailService.csproj", "{32D1560F-3338-4E0A-989E-D23BBDCCBA4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoProject.EmailService", "EmailService\ToDoProject.EmailService.csproj", "{32D1560F-3338-4E0A-989E-D23BBDCCBA4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

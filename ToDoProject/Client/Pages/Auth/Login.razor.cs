@@ -6,7 +6,7 @@ using ToDoProject.Client.Services;
 using ToDoProject.Client.Shared.Dialogs;
 using ToDoProject.Models.DTO.Auth;
 
-namespace ToDoProject.Client.Pages
+namespace ToDoProject.Client.Pages.Auth
 {
     public partial class Login
     {

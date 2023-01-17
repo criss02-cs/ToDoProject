@@ -20,7 +20,7 @@ using ToDoProject.Client.Models;
 using System.Text.RegularExpressions;
 using MudBlazor;
 
-namespace ToDoProject.Client.Pages
+namespace ToDoProject.Client.Pages.Auth
 {
     public partial class Registration
     {

@@ -56,6 +56,24 @@ namespace ToDoProject.Server.Controllers
             }
             return Ok(result);
         }
+        [HttpPost, Route("ConfirmEmail")]
+        public ActionResult<ConfirmEmail> ConfirmEmail([FromBody] ConfirmEmail request)
+        {
+            // Verifico la validità del token, non controllo se sia scaduto dato che
+            // sono sicuro che l'abbia già controllato la parte di front end
+            var isValid = this.ValidateToken(request.Token);
+            // Se il token è valido vado a confermare l'email
+            if (isValid)
+            {
+                var manager = new UserManager(_ctx);
+                var result = manager.ConfirmEmail(request.Email);
+                request.IsEmailConfirmed = result;
+                request.IsTokenValid = isValid;
+                return Ok(request);
+            }
+            var error = new ConfirmEmail { Email = request.Email, Token = request.Token, IsEmailConfirmed = false, IsTokenValid = false };
+            return Ok(error);
+        }
 
         [HttpPost, Route("SendConfirmationEmail")]
         public async Task<ActionResult<bool>> SendConfirmationEmailAsync([FromBody] ConfirmationEmailRequest request)
@@ -79,6 +97,28 @@ namespace ToDoProject.Server.Controllers
             // Codice per inviare l'email
             emailSender = new EmailSender(apiKey);
             await emailSender.SendEmailAsync(email, "Conferma Email", confirmationLink);
+        }
+
+        private bool ValidateToken(string token)
+        {
+            var secret = _configuration["JWT:Secret"];
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                }, out SecurityToken validationToken);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private string CreateToken(UserDTO? user)

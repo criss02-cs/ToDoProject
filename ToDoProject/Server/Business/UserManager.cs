@@ -40,6 +40,27 @@ namespace ToDoProject.Server.Business
             }
         }
 
+        public bool ConfirmEmail(string email)
+        {
+            try
+            {
+                var user = _repository.GetFirstOrDefault(x => x.Email == email && !x.IsDeleted);
+                // Controllo che l'utente esista effettivamente e non abbia già l'email confermata
+                if(user != null && !user.IsEmailConfirmed)
+                {
+                    user.IsEmailConfirmed = true;
+                    user.UpdatedDate = DateTime.Now;
+                    var result = this.Update(user);
+                    return result;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public bool InsertDTO(UserDTO model)
         {
             User entity = UserDTO.GetEntity(model);
@@ -101,9 +122,15 @@ namespace ToDoProject.Server.Business
             var righe = _ctx.SaveChanges();
             return righe > 0;
         }
-        public bool Update(UserDTO model)
+        public bool UpdateDTO(UserDTO model)
         {
             User entity = UserDTO.GetEntity(model);
+            _repository.Update(entity);
+            var righe = _ctx.SaveChanges();
+            return righe > 0;
+        }
+        public bool Update(User entity)
+        {
             _repository.Update(entity);
             var righe = _ctx.SaveChanges();
             return righe > 0;

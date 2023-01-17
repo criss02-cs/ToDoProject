@@ -39,6 +39,18 @@ namespace ToDoProject.Client.Services
             return new RegistrationResponse { IsSuccesfulRegistration = false };
         }
 
+        public async Task<ConfirmEmail> ConfirmEmail(ConfirmEmail confirmEmail)
+        {
+            var result = await _client.PostAsJsonAsync("api/auth/ConfirmEmail", confirmEmail);
+            var content = await result.Content.ReadAsStringAsync();
+            if (result.IsSuccessStatusCode)
+            {
+                var response = JsonSerializer.Deserialize<ConfirmEmail>(content, _options);
+                return response;
+            }
+            return new ConfirmEmail { Email = confirmEmail.Email, Token = confirmEmail.Token, IsEmailConfirmed = false, IsTokenValid = false };
+        }
+
         public async Task<RegistrationResponse> RegisterUser(RegistrationRequest registrationRequest)
         {
             var registrationResult = await _client.PostAsJsonAsync("api/auth/Register", registrationRequest);

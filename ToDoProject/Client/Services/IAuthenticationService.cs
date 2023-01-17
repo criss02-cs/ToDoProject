@@ -6,5 +6,6 @@ namespace ToDoProject.Client.Services
     {
         Task<RegistrationResponse> RegisterUser(RegistrationRequest registrationRequest);
         Task<RegistrationResponse> LoginUser(LoginRequest loginRequest);
+        Task<ConfirmEmail> ConfirmEmail(ConfirmEmail confirmEmail);
     }
 }

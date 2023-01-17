@@ -23,7 +23,6 @@ namespace ToDoProject.Client
             try
             {
                 var currentUser = await _localStorage.GetItemAsync<UserLocalStorage>("currentuser");
-                Console.WriteLine(currentUser?.User?.Name);
                 ClaimsIdentity identity;
                 // Controllo che effettivamente ci siano dei dati all'interno dello storage
                 if (currentUser != null && currentUser.User != null && !string.IsNullOrWhiteSpace(currentUser.Token))

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoProject.Shared.Enums;
+using ToDoProject.Models.Enums;
 
 namespace ToDoProject.Models.Entities
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ToDoProject.Server.Business;
 
 namespace ToDoProject.Server.Controllers
 {
@@ -20,8 +21,9 @@ namespace ToDoProject.Server.Controllers
         [HttpGet, Route("GetToDoItemsByUserId/{userId:Guid}")]
         public IActionResult GetToDoItemsByUserId(Guid userId)
         {
-            //var manager = new Todo
-            return Ok();
+            var manager = new ToDoManager(_ctx);
+            var response = manager.GetToDoItemsByUserId(userId);
+            return Ok(response);
         }
     }
 }

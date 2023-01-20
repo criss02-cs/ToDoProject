@@ -21,7 +21,6 @@ using ToDoProject.Client.Models;
 using ToDoProject.Client.Services;
 using ToDoProject.Models.DTO;
 using ToDoProject.Models.Enums;
-using ToDoProject.Shared.Enums;
 
 namespace ToDoProject.Client.Shared
 {

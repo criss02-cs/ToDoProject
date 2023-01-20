@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoProject.Shared.Enums
+namespace ToDoProject.Models.Enums
 {
     /// <summary>
     /// Enumerazione per gestire il tipo del task,
@@ -14,8 +14,8 @@ namespace ToDoProject.Shared.Enums
     /// </summary>
     public enum ToDoType
     {
+        DA_INIZIARE,
         IN_CORSO,
         FINITO,
-        DA_INIZIARE
     }
 }

@@ -16,6 +16,32 @@ namespace ToDoProject.Server.Business
             _repository = new GenericRepository<ToDoItem>(ctx);
         }
 
+        public List<ToDoItemDTO> GetToDoItemsByUserId(Guid userId)
+        {
+            try
+            {
+                var response = new List<ToDoItemDTO>();
+                // Mi prendo tutti gli items che non sono stati eliminati
+                // e che sono stati creati dall'utente passato per parametro
+                var items = _repository.Get(x => x.UserId == userId && !x.IsDeleted);
+                if(items != null)
+                {
+                    // Li trasformo in DTO e li aggiungo alla lista
+                    foreach (var item in items)
+                    {
+                        var model = ToDoItemDTO.Create(item);
+                        response.Add(model);
+                    }
+                }
+                // Al massimo ritorno una lista vuota
+                return response;
+            }
+            catch (Exception)
+            {
+                return new List<ToDoItemDTO>();
+            }
+        }
+
         public WebApiResponse<bool> InsertToDoItem(ToDoItemDTO toDoItem)
         {
             try

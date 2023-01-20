@@ -25,6 +25,7 @@ using ToDoProject.Client.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using ToDoProject.Client.Services.ToDoItems;
 using ToDoProject.Models.DTO;
+using ToDoProject.Models.Enums;
 
 namespace ToDoProject.Client.Pages
 {
@@ -37,13 +38,17 @@ namespace ToDoProject.Client.Pages
         [Inject]
         IToDoItemService ToDoItemService { get; set; }
 
-        private IList<ToDoItemDTO> ToDoItems { get; set; }
+        private List<ToDoItemDTO> ToDoItems { get; set; }
 
 
         protected override async Task OnInitializedAsync()
         {
             //Codice per ottenere tutte le task dell'utente
             ToDoItems = await ToDoItemService.GetToDoItemsByIdUserAsync(CurrentUser.User.Id);
+            if(ToDoItems is null)
+            {
+                ToDoItems = new List<ToDoItemDTO>();
+            }
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -54,6 +59,41 @@ namespace ToDoProject.Client.Pages
                 {
                     Snackbar.Add("La tua mail ha bisogno di essere confermata", Severity.Warning);
                 }
+            }
+        }
+
+        private void UpdateToDoItem(MudItemDropInfo<ToDoItemDTO> droppedItem)
+        {
+            droppedItem.Item.Type = Enum.Parse<ToDoType>(droppedItem.DropzoneIdentifier);
+        }
+
+        private string GetNameOfToDoType(ToDoType type)
+        {
+            switch (type)
+            {
+                case ToDoType.DA_INIZIARE:
+                    return "Da iniziare";
+                case ToDoType.IN_CORSO:
+                    return "In corso";
+                case ToDoType.FINITO:
+                    return "Finito";
+                default:
+                    return "";
+            }
+        }
+
+        private string GetClassOfDropZone(ToDoType type)
+        {
+            switch (type)
+            {
+                case ToDoType.DA_INIZIARE:
+                    return "background-color: " + Colors.Red.Darken1;
+                case ToDoType.IN_CORSO:
+                    return "background-color: " + Colors.Yellow.Darken1;
+                case ToDoType.FINITO:
+                    return "background-color: " + Colors.LightGreen.Darken1;
+                default:
+                    return "";
             }
         }
 

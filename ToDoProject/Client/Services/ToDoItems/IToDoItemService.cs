@@ -4,6 +4,6 @@ namespace ToDoProject.Client.Services.ToDoItems
 {
     public interface IToDoItemService
     {
-        Task<IList<ToDoItemDTO>> GetToDoItemsByIdUserAsync(Guid userId);
+        Task<List<ToDoItemDTO>> GetToDoItemsByIdUserAsync(Guid userId);
     }
 }

@@ -26,12 +26,12 @@ namespace ToDoProject.Client.Services.ToDoItems
 
 
 
-        public async Task<IList<ToDoItemDTO>> GetToDoItemsByIdUserAsync(Guid userId)
+        public async Task<List<ToDoItemDTO>> GetToDoItemsByIdUserAsync(Guid userId)
         {
             try
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUser?.Token);
-                var response = await _client.GetFromJsonAsync<IList<ToDoItemDTO>>($"{this.ToDoItemEndPoint}/GetToDoItemsByUserId/{userId}");
+                var response = await _client.GetFromJsonAsync<List<ToDoItemDTO>>($"{this.ToDoItemEndPoint}/GetToDoItemsByUserId/{userId}");
                 return response;
             }
             catch (Exception)

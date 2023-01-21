@@ -87,11 +87,11 @@ namespace ToDoProject.Client.Pages
             switch (type)
             {
                 case ToDoType.DA_INIZIARE:
-                    return "background-color: " + Colors.Red.Darken1;
+                    return "background-color: " + Colors.Orange.Lighten1;
                 case ToDoType.IN_CORSO:
-                    return "background-color: " + Colors.Yellow.Darken1;
+                    return "background-color: " + Colors.Yellow.Lighten1;
                 case ToDoType.FINITO:
-                    return "background-color: " + Colors.LightGreen.Darken1;
+                    return "background-color: " + Colors.LightGreen.Lighten1;
                 default:
                     return "";
             }

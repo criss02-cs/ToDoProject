@@ -1,44 +1,9 @@
 ﻿@page "/home"
 @using Microsoft.AspNetCore.Authorization;
-@using System.Security.Claims;
-@using System.IdentityModel.Tokens.Jwt;
-@using Microsoft.IdentityModel.Tokens;
-@using System.Text;
-@using ToDoProject.Client.Models;
-@using ToDoProject.Models.DTO;
-@using ToDoProject.Models.Enums;
+@using ToDoProject.Client.Shared.ToDoComponent;
 @attribute [Authorize]
 
 
 <PageTitle>Dashboard</PageTitle>
 
-<h1>Le tue task</h1>
-@if(ToDoItems is null) 
-{
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-}
-else 
-{
-    @if (ToDoItems?.Count == 0)
-    {
-                        <MudText>Non hai ancora nessun To Do, che aspetti creane uno</MudText>
-    }
-    <MudDropContainer T="ToDoItemDTO" Items="ToDoItems" 
-    ItemsSelector="((item, dropzone) => Enum.GetName(item.Type).Equals(dropzone))" 
-    ItemDropped="UpdateToDoItem" Class="d-flex flex-wrap flex-grow-1">
-            <ChildContent>
-            @foreach (ToDoType type in Enum.GetValues(typeof(ToDoType)))
-            {
-                                    <MudPaper Class="ma-4 flex-grow-1" Style="@GetClassOfDropZone(type)">
-                                            <MudList Clickable="true" Class="d-flex flex-column mud-height-full"> 
-                                                     <MudListSubheader>@GetNameOfToDoType(type)</MudListSubheader>
-                                                     <MudDropZone T="ToDoItemDTO" Identifier="@type.ToString()" Class="flex-grow-1" />
-                                            </MudList>
-                                    </MudPaper>
-            }
-            </ChildContent>
-            <ItemRenderer>
-                <MudListItem Text="@context.Name"/>
-            </ItemRenderer>
-        </MudDropContainer>
-}
+<ToDoItemsTable ToDoItems="ToDoItems" />

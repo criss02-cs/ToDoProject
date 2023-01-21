@@ -17,14 +17,49 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using MudBlazor;
 using ToDoProject.Models.DTO;
+using ToDoProject.Models.Enums;
 
 namespace ToDoProject.Client.Shared.ToDoComponent
 {
     public partial class ToDoItemsTable
     {
         [Parameter]
-        public IList<ToDoItemDTO>? ToDoItems { get; set; }
+        public List<ToDoItemDTO>? ToDoItems { get; set; }
 
+        private void UpdateToDoItem(MudItemDropInfo<ToDoItemDTO> droppedItem)
+        {
+            droppedItem.Item.Type = Enum.Parse<ToDoType>(droppedItem.DropzoneIdentifier);
+        }
+
+        private string GetNameOfToDoType(ToDoType type)
+        {
+            switch (type)
+            {
+                case ToDoType.DA_INIZIARE:
+                    return "Da iniziare";
+                case ToDoType.IN_CORSO:
+                    return "In corso";
+                case ToDoType.FINITO:
+                    return "Finito";
+                default:
+                    return "";
+            }
+        }
+
+        private string GetClassOfDropZone(ToDoType type)
+        {
+            switch (type)
+            {
+                case ToDoType.DA_INIZIARE:
+                    return "background-color: " + Colors.Orange.Lighten1;
+                case ToDoType.IN_CORSO:
+                    return "background-color: " + Colors.Yellow.Lighten1;
+                case ToDoType.FINITO:
+                    return "background-color: " + Colors.LightGreen.Lighten1;
+                default:
+                    return "";
+            }
+        }
 
     }
 }

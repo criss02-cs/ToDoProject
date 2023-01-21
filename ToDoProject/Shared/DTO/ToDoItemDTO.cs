@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,12 @@ namespace ToDoProject.Models.DTO
     public class ToDoItemDTO
     {
         public Guid Id { get; set; }
+        [Required(ErrorMessage ="Il ToDo deve avere un titolo")]
         public string? Name { get; set; }
         public string? Description { get; set; }
+        [Required(ErrorMessage = "Il ToDo deve avere una priorità")]
         public ToDoPriority Priority { get; set; }
+        [Required(ErrorMessage = "Il ToDo deve avere un tipo")]
         public ToDoType Type { get; set; }
         public DateTime? EndDate { get; set; }
         public Guid UserId { get; set; }

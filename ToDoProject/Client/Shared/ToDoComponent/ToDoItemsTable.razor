@@ -1,15 +1,7 @@
 ﻿@using ToDoProject.Models.DTO;
 @using ToDoProject.Models.Enums;
 
-@*@if(ToDoItems?.Count > 0)
-    {
-
-    }
-    else
-    {
-    <MudText>Non ci sono task da te create, aggiungine una</MudText>
-    }*@
-
+<h1>La tua ToDo list</h1>
 @if (ToDoItems is null)
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
@@ -18,7 +10,13 @@ else
 {
     @if (ToDoItems?.Count == 0)
     {
-        <MudText>Non hai ancora nessun To Do, che aspetti creane uno</MudText>
+        @*<MudText>Non hai ancora nessun To Do, che aspetti creane uno</MudText>*@
+        <div class="flex-column">
+            <MudText>Non hai ancora nessun To Do, che aspetti? Creane uno</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Add" 
+                Variant="Variant.Filled" Color="Color.Primary" 
+                aria-label="Aggiungi" Style="border-radius: 25px" ></MudIconButton>
+        </div>
     }
     <MudDropContainer T="ToDoItemDTO" Items="ToDoItems"
         ItemsSelector="((item, dropzone) => Enum.GetName(item.Type).Equals(dropzone))" ItemDropped="UpdateToDoItem"

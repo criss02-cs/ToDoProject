@@ -12,10 +12,13 @@
             <MudIcon Icon="@Icons.Material.Filled.Notifications"/>
             <MudMenu ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
                 <ActivatorContent>
-                    <MudMenuItem IconSize="Size.Medium" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Person">
-                        <div style="font-size: 18px;">
+                    <MudMenuItem>
+                        @*<div style="font-size: 18px;">
                             @context.User.Identity.Name
-                        </div>
+                        </div>*@
+                        <MudButton Variant="Variant.Text" IconColor="Color.Primary" 
+                            Size="Size.Large" StartIcon="@Icons.Material.Filled.Person"
+                            Style="text-transform: none; font-weight: normal; font-size: 18px">@context.User.Identity.Name</MudButton>
                     </MudMenuItem>
                     @*<MudAvatar Size="Size.Medium" Style="height: 35px; width: 35px">
                         <MudIcon Icon="@Icons.Material.Filled.Person" Title="@context.User.Identity.Name"/>

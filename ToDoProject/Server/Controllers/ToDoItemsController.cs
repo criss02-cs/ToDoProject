@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ToDoProject.Models;
+using ToDoProject.Models.DTO;
 using ToDoProject.Server.Business;
 
 namespace ToDoProject.Server.Controllers
@@ -23,6 +25,14 @@ namespace ToDoProject.Server.Controllers
         {
             var manager = new ToDoManager(_ctx);
             var response = manager.GetToDoItemsByUserId(userId);
+            return Ok(response);
+        }
+
+        [HttpPost, Route("AddNewToDo")]
+        public ActionResult<WebApiResponse<bool>> AddNewToDo([FromBody] ToDoItemDTO todoItem)
+        {
+            var manager = new ToDoManager(_ctx);
+            var response = manager.InsertToDoItem(todoItem);
             return Ok(response);
         }
     }

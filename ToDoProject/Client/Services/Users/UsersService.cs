@@ -44,13 +44,9 @@ namespace ToDoProject.Client.Services.Users
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUser?.Token);
                 var response = await _client.PostAsJsonAsync("api/users/AddNewUser", userDTO, _options);
                 var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(content);
                 if(response.IsSuccessStatusCode)
                 {
                     var result = JsonSerializer.Deserialize<WebApiResponse<bool>>(content, _options);
-                    Console.WriteLine(result.Error);
-                    Console.WriteLine(result.IsSuccesful);
-                    Console.WriteLine("Result " + result.Result);
                     return result;
                 }
                 return new WebApiResponse<bool>

@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using ToDoProject.Client.Models;
+using ToDoProject.Models;
 using ToDoProject.Models.DTO;
 
 namespace ToDoProject.Client.Services.ToDoItems
@@ -37,6 +38,36 @@ namespace ToDoProject.Client.Services.ToDoItems
             catch (Exception)
             {
                 return new List<ToDoItemDTO>();
+            }
+        }
+
+        public async Task<WebApiResponse<bool>> AddToDoItem(ToDoItemDTO dto)
+        {
+            try
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CurrentUser?.Token);
+                var response = await _client.PostAsJsonAsync("api/todoitems/AddNewToDo", dto, _options);
+                var content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<WebApiResponse<bool>>(content, _options);
+                    return result;
+                }
+                return new WebApiResponse<bool>
+                {
+                    Result = false,
+                    IsSuccesful = false,
+                    Error = "C'è stato un errore durante la connessione alla fonte dati"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new WebApiResponse<bool>
+                {
+                    Result = false,
+                    IsSuccesful = false,
+                    Error = ex.Message
+                };
             }
         }
 

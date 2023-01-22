@@ -103,7 +103,6 @@ namespace ToDoProject.Client.Pages.Auth
                 ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(user);
                 // Torno alla home
                 NavigationManager.NavigateTo("/home");
-                //Console.WriteLine(result.User?.Name);
             }
         }
         private string? PasswordMatch(string arg)

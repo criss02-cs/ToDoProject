@@ -82,13 +82,6 @@ namespace ToDoProject.Client.Shared.UserComponent
             get => (StateProvider as CustomAuthenticationStateProvider)?.CurrentUser;
         }
 
-        public IEnumerable<string> SelectedUserType
-        {
-            get => Enum.GetNames(typeof(UserType)).
-                Where(x => x.Equals(Enum.GetName(_user.UserType))).
-                Select(x => x.ToLower());
-        }
-
         private bool IsValid()
         {
             if(_user.Name is not null && _user.Surname is not null && 

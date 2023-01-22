@@ -70,7 +70,6 @@ namespace ToDoProject.Client.Pages.Auth
                 ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(user);
                 // Torno alla home
                 NavigationManager.NavigateTo("/home");
-                //Console.WriteLine(result.User?.Name);
             }
         }
         public void NavigateToRegister()

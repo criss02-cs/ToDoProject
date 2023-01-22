@@ -1,5 +1,40 @@
-﻿<h3>ToDoForm</h3>
+﻿@using ToDoProject.Models.DTO;
+@using ToDoProject.Models.Enums;
+<EditForm Model="_todoItem" OnValidSubmit="@(() => OnValidSubmit(_todoItem))" class="col-12">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField T="string" Label="Titolo" Required="true" RequiredError="Il ToDo deve avere un titolo"
+                        @bind-Value="@_todoItem.Name"/>
+                    <MudTextField T="string" Label="Descrizione" @bind-Value="@_todoItem.Description" Lines="7"/>
+                    <MudSelect @bind-Value="@_todoItem.Priority" Label="Priorità" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" Required="true"
+                               RequiredError="Il ToDo deve avere una priorità">
+                        @foreach (ToDoPriority type in Enum.GetValues(typeof(ToDoPriority)))
+                        {
+                             <MudSelectItem Value="@type" />
+                        }
+                    </MudSelect>
+                    <MudSelect @bind-Value="@_todoItem.Type" Label="Tipo" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" Required="true"
+                               RequiredError="Il ToDo deve avere un tipo">
+                        @foreach (ToDoType type in Enum.GetValues(typeof(ToDoType)))
+                        {
+                            <MudSelectItem Value="@type" />
+                        }
+                    </MudSelect>
+                    <MudDatePicker Editable="true" @bind-Date="@_todoItem.EndDate" Placeholder="Inserisci la data in cui scade questo todo" />
+                    @*<MudText Typo="Typo.subtitle2">I campi che hanno * sono obbligatori</MudText>*@
+                </MudCardContent>
+                <MudCardActions>
+                    <div class="d-flex m-auto">
+                        <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary"
+                                   Class="ml-auto" Style="margin-left: 10px">Aggiungi</MudButton>
+                    </div>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
 
-@code {
 
-}

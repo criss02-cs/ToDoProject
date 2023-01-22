@@ -18,6 +18,7 @@ using Blazored.LocalStorage;
 using MudBlazor;
 using ToDoProject.Models.DTO;
 using ToDoProject.Models.Enums;
+using ToDoProject.Client.Shared.Dialogs;
 
 namespace ToDoProject.Client.Shared.ToDoComponent
 {
@@ -25,6 +26,8 @@ namespace ToDoProject.Client.Shared.ToDoComponent
     {
         [Parameter]
         public List<ToDoItemDTO>? ToDoItems { get; set; }
+        [Parameter]
+        public Action OnAggiungiClick { get; set; }
 
         private void UpdateToDoItem(MudItemDropInfo<ToDoItemDTO> droppedItem)
         {
@@ -60,6 +63,5 @@ namespace ToDoProject.Client.Shared.ToDoComponent
                     return "";
             }
         }
-
     }
 }

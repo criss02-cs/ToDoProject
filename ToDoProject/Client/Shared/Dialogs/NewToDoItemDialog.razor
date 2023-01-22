@@ -1,0 +1,57 @@
+﻿@using ToDoProject.Client.Models;
+@using ToDoProject.Client.Services.ToDoItems;
+@using ToDoProject.Client.Shared.ToDoComponent
+@using ToDoProject.Models.DTO;
+@inject IToDoItemService ToDoService;
+@inject IDialogService DialogService;
+
+<MudDialog>
+    <DialogContent>
+        <center>
+            <ToDoForm OnValidSubmit="OnValidSubmit"/>
+        </center>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance? MudDialog { get; set; }
+
+    [Inject]
+    public AuthenticationStateProvider AuthenticationState { get; set; }
+
+
+    private async void OnValidSubmit(ToDoItemDTO userDTO)
+    {
+        // Inserisco nell'oggetto l'id dell'utente
+        // che è attualmente in sessione
+        // in futuro, se l'utente è un amministratore o cose simili
+        // potrà inserire direttamente a quale utente appartiene il todo
+        userDTO.UserId = CurrentUser.User.Id;
+        var dialog = DialogService.Show<LoadingDialog>("Salvataggio del todo");
+        var response = await ToDoService.AddToDoItem(userDTO);
+        dialog.Close();
+        if (response.IsSuccesful && response.Result)
+        {
+            MudDialog?.Close();
+        }
+        // Dai messaggio di errore nel salvataggio
+        else
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("ErrorText", response.Error);
+            var options = new DialogOptions()
+                {
+                    CloseButton = true,
+                    CloseOnEscapeKey = true,
+                    MaxWidth = MaxWidth.ExtraSmall
+                };
+            DialogService.Show<ErrorDialog>("Errore", parameters, options);
+        }
+    }
+
+    private UserLocalStorage CurrentUser
+    {
+        get => (AuthenticationState as CustomAuthenticationStateProvider).CurrentUser;
+    }
+}

@@ -10,6 +10,9 @@ namespace ToDoProject.Client.Services.ToDoItems
 {
     public class ToDoItemService : IToDoItemService
     {
+        public event EventHandler<List<ToDoItemDTO>> ListChanged;
+
+
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
         private readonly ILocalStorageService _localStorageService;
@@ -35,7 +38,7 @@ namespace ToDoProject.Client.Services.ToDoItems
                 var response = await _client.GetFromJsonAsync<List<ToDoItemDTO>>($"{this.ToDoItemEndPoint}/GetToDoItemsByUserId/{userId}");
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new List<ToDoItemDTO>();
             }
@@ -51,6 +54,11 @@ namespace ToDoProject.Client.Services.ToDoItems
                 if (response.IsSuccessStatusCode)
                 {
                     var result = JsonSerializer.Deserialize<WebApiResponse<bool>>(content, _options);
+                    if (result.IsSuccesful)
+                    {
+                        var todos = await GetToDoItemsByIdUserAsync(CurrentUser.User.Id);
+                        ListChanged?.Invoke(this, todos);
+                    }
                     return result;
                 }
                 return new WebApiResponse<bool>

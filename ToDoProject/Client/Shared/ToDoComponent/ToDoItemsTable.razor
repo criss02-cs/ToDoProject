@@ -1,5 +1,7 @@
-﻿@using ToDoProject.Models.DTO;
+﻿@using ToDoProject.Client.Services.ToDoItems;
+@using ToDoProject.Models.DTO;
 @using ToDoProject.Models.Enums;
+
 
 <h1>La tua ToDo list</h1>
 @if (ToDoItems is null)
@@ -19,22 +21,29 @@ else
         <MudIconButton Icon="@Icons.Material.Filled.Add" 
                 Variant="Variant.Filled" Color="Color.Primary" 
                 aria-label="Aggiungi" Style="border-radius: 25px" OnClick="OnAggiungiClick" ></MudIconButton>
-    <MudDropContainer T="ToDoItemDTO" Items="ToDoItems"
-        ItemsSelector="((item, dropzone) => Enum.GetName(item.Type).Equals(dropzone))" ItemDropped="UpdateToDoItem"
-        Class="d-flex flex-wrap flex-grow-1">
-        <ChildContent>
-            @foreach (ToDoType type in Enum.GetValues(typeof(ToDoType)))
-            {
-                <MudPaper Class="ma-4 flex-grow-1" Style="@GetClassOfDropZone(type)">
-                    <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
-                        <MudListSubheader>@GetNameOfToDoType(type)</MudListSubheader>
-                        <MudDropZone T="ToDoItemDTO" Identifier="@type.ToString()" Class="flex-grow-1" />
-                    </MudList>
-                </MudPaper>
-            }
-        </ChildContent>
-        <ItemRenderer>
-            <MudListItem Text="@context.Name" />
-        </ItemRenderer>
-    </MudDropContainer>
+        <MudDropContainer T="ToDoItemDTO" Items="ToDoItems"
+            ItemsSelector="((item, dropzone) => Enum.GetName(item.Type).Equals(dropzone))" ItemDropped="UpdateToDoItem"
+            Class="d-flex flex-wrap flex-grow-1">
+            <ChildContent>
+                @foreach (ToDoType type in Enum.GetValues(typeof(ToDoType)))
+                {
+                    <MudPaper Class="ma-4 flex-grow-1" Style="@GetClassOfDropZone(type)">
+                        <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+                            <MudListSubheader>@GetNameOfToDoType(type)</MudListSubheader>
+                            <MudDropZone T="ToDoItemDTO" Identifier="@type.ToString()" Class="flex-grow-1" />
+                        </MudList>
+                    </MudPaper>
+                }
+            </ChildContent>
+            <ItemRenderer>
+                <MudListItem Text="@context.Name" />
+            </ItemRenderer>
+        </MudDropContainer>
+
+
+        <p>COMPONENT</p>
+            @foreach (var item in ToDoItems)
+    {
+        <p>@item.Name</p>
+    }
 }

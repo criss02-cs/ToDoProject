@@ -28,6 +28,14 @@ namespace ToDoProject.Client.Pages
             {
                 ToDoItems = new List<ToDoItemDTO>();
             }
+
+            ToDoItemService.ListChanged += ToDoItemService_ListChanged;
+        }
+
+        private async void ToDoItemService_ListChanged(object? sender, List<ToDoItemDTO> e)
+        {
+            ToDoItems = await ToDoItemService.GetToDoItemsByIdUserAsync(CurrentUser.User.Id);
+            StateHasChanged();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -50,6 +58,9 @@ namespace ToDoProject.Client.Pages
         {
             var dialog = DialogService.Show<NewToDoItemDialog>("Nuovo To do", new DialogOptions { CloseOnEscapeKey = true, FullWidth = true, CloseButton = true });
             var result = await dialog.Result;
+
+            
+
             StateHasChanged();
         }
         public UserLocalStorage? CurrentUser { get => (AuthenticationStateProvider as CustomAuthenticationStateProvider)?.CurrentUser; }

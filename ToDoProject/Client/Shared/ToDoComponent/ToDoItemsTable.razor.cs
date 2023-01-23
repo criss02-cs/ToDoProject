@@ -26,6 +26,10 @@ namespace ToDoProject.Client.Shared.ToDoComponent
     {
         [Parameter]
         public List<ToDoItemDTO>? ToDoItems { get; set; }
+
+        [Parameter]
+        public EventCallback<List<ToDoItemDTO>> ToDoItemsChanged { get; set;}
+
         [Parameter]
         public Action OnAggiungiClick { get; set; }
 
@@ -63,5 +67,6 @@ namespace ToDoProject.Client.Shared.ToDoComponent
                     return "";
             }
         }
+
     }
 }

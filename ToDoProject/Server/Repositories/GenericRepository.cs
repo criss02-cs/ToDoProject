@@ -13,6 +13,8 @@ namespace ToDoProject.Server.Repositories
         {
             this._ctx = ctx;
             this._dbSet = ctx.Set<TEntity>();
+
+            _ctx.Database.EnsureCreated();
         }
         // Tecnicamente non dovrebbe servire, ma la tengo in caso
         // servisse per alleggerire il db

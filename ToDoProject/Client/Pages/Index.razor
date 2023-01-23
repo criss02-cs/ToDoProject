@@ -6,4 +6,8 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-<ToDoItemsTable ToDoItems="ToDoItems" OnAggiungiClick="OpenDialog" />
+
+@if(ToDoItems != null)
+{
+    <ToDoItemsTable @bind-ToDoItems="ToDoItems" OnAggiungiClick="OpenDialog" />
+}

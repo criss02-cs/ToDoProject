@@ -19,7 +19,6 @@ namespace ToDoProject.Client.Pages
         IDialogService DialogService { get; set; }
         private List<ToDoItemDTO> ToDoItems { get; set; }
 
-
         protected override async Task OnInitializedAsync()
         {
             //Codice per ottenere tutte le task dell'utente
@@ -46,11 +45,13 @@ namespace ToDoProject.Client.Pages
                 }
             }
         }
-        private async void OpenDialog()
+        private async void OpenDialog(MudDropContainer<ToDoItemDTO> container)
         {
             var dialog = DialogService.Show<NewToDoItemDialog>("Nuovo To do", new DialogOptions { CloseOnEscapeKey = true, FullWidth = true, CloseButton = true });
             var result = await dialog.Result;
+            ToDoItems = await ToDoItemService.GetToDoItemsByIdUserAsync(CurrentUser.User.Id);
             StateHasChanged();
+            container.Refresh();
         }
         public UserLocalStorage? CurrentUser { get => (AuthenticationStateProvider as CustomAuthenticationStateProvider)?.CurrentUser; }
     }

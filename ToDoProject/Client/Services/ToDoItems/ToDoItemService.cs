@@ -10,6 +10,7 @@ namespace ToDoProject.Client.Services.ToDoItems
 {
     public class ToDoItemService : IToDoItemService
     {
+
         private readonly HttpClient _client;
         private readonly JsonSerializerOptions _options;
         private readonly ILocalStorageService _localStorageService;

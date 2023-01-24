@@ -27,7 +27,15 @@ namespace ToDoProject.Client.Shared.ToDoComponent
         [Parameter]
         public List<ToDoItemDTO>? ToDoItems { get; set; }
         [Parameter]
-        public Action OnAggiungiClick { get; set; }
+        public Action<MudDropContainer<ToDoItemDTO>?>? OnAggiungiClick { get; set; }
+
+
+        private MudDropContainer<ToDoItemDTO>? container;
+
+        //protected override void OnAfterRender(bool firstRender)
+        //{
+        //    container?.Refresh();
+        //}
 
         private void UpdateToDoItem(MudItemDropInfo<ToDoItemDTO> droppedItem)
         {

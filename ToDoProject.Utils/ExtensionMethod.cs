@@ -1,4 +1,6 @@
-﻿namespace ToDoProject.Utils
+﻿using System.Collections.ObjectModel;
+
+namespace ToDoProject.Utils
 {
     public static class ExtensionMethod
     {
@@ -14,6 +16,11 @@
         public static bool IsToday(this DateTime date)
         {
             return date.Equals(DateTime.Today);
+        }
+
+        public static ObservableCollection<T> ToObservableCollection<T>(this List<T> list)
+        {
+            return new ObservableCollection<T>(list);
         }
     }
 }
